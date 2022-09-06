@@ -1,0 +1,151 @@
+<view class="cu-bar bg-black search">
+    <view class="cu-avatar-round" style="background-image:url(https://image.weilanwl.com/img/square-3.jpg);"></view>
+    <view class="content"  style="margin-top: 60rpx;">
+      扫描全能王
+    </view>
+    <view class="action">
+      <text class="cuIcon-more"></text>
+    </view>
+</view>
+
+<!-- 这里src 改成了 srcProcess -->
+<view  class="button-container">
+  <view>
+    <image bindlongpress="saveImage" bindtap="clickme" bindload="getpicwh" class= "show-image" mode="aspectFit" src="{{srcProcess}}" data-url="{{srcProcess}}"></image>
+  </view>
+  <view class="shangchuan">
+    <button class="cu-btn block line-orange lg" bindtap="gotoShow">
+      <text class="cuIcon-upload">上传图片</text>
+    </button>
+  </view>
+  <!-- 这里新加了一个“处理图像”按钮 -->
+  <view class="shangchuan">
+    <button class="cu-btn block line-orange lg" bindtap="processImg">
+      <text class="cuIcon-upload">处理图片</text>
+    </button>
+  </view>
+
+  <view class="shangchuan">
+    <button class="cu-btn block line-orange lg" bindtap="fuyuan">
+      <text class="cuIcon-upload">一键复原</text>
+    </button>
+  </view>
+
+</view>
+
+
+
+<view class="container" >
+  <view wx:if="{{flag==1}}" class="section section_gap">
+      <text class="text-red" style="margin-left: 30rpx; font-size:15px;">对比度</text>
+      <view class="body-view">
+          <slider bindchange="sliderchange" step="0.1" min="2" max="50" show-value/>
+      </view>
+  </view>
+  <view wx:if="{{flag==2}}" class="section section_gap">
+    <text class="text-orange" style="margin-left: 30rpx; font-size:15px;">去噪声</text>
+    <view class="body-view">
+        <slider bindchange="sliderchange"  step="0.1" min="5" max="21" show-value/>
+    </view>
+    <!-- <text class="text-mauve">平滑值</text>
+    <view class="body-view">
+        <slider bindchange="sliderchange" min="50" max="200" show-value/>
+    </view> -->
+  </view>
+
+  <view wx:if="{{flag==4}}" class="section section_gap">
+      <text class="text-olive" style="margin-left: 30rpx; font-size:15px;">锐化</text>
+      <view class="body-view">
+          <slider bindchange="sliderchange" step="0.1" min="2" max="4" show-value/>
+      </view>
+  </view>
+  <!-- 这两个是新加的，文字可以改一下 -->
+  <view wx:if="{{flag==5}}" class="section section_gap">
+      <text class="text-blue" style="margin-left: 30rpx; font-size:15px;">自适应阈值</text>
+      <view class="body-view">
+          <slider bindchange="sliderchange" step="0.1" min="11" max="31" show-value/>
+      </view>
+  </view>
+  <view wx:if="{{flag==6}}" class="section section_gap">
+      <text class="text-purple" style="margin-left: 30rpx; font-size:15px;">sauvola阈值</text>
+      <view class="body-view">
+          <slider bindchange="sliderchange" step="0.1" min="0.2" max="0.8" show-value/>
+      </view>
+  </view>
+
+  <!-- 腐蚀膨胀 -->
+  <view wx:if="{{flag==8}}" class="section section_gap">
+      <text class="text-mauve" style="margin-left: 30rpx; font-size:15px;">腐蚀</text>
+      <view class="body-view">
+          <slider bindchange="sliderchange" step="1" min="2" max="8" show-value/>
+      </view>
+  </view>
+  <view wx:if="{{flag==9}}" class="section section_gap">
+      <text class="text-cyan" style="margin-left: 30rpx; font-size:15px;">膨胀</text>
+      <view class="body-view">
+          <slider bindchange="sliderchange" step="1" min="2" max="8" show-value/>
+      </view>
+  </view>
+</view>
+
+<!-- <basics wx:if="{{PageCur=='basics'}}"></basics>
+<component wx:if="{{PageCur=='component'}}"></component>
+<plugin wx:if="{{PageCur=='plugin'}}"></plugin>
+<about wx:if="{{PageCur=='about'}}"></about> -->
+
+
+
+<view class="cu-list grid col-{{gridCol}} {{gridBorder?'':'no-border'}}" >
+  <view class="cu-item" wx:for="{{iconList}}" wx:key wx:if="{{index<gridCol*2}}" >
+    <view class="cuIcon-{{item.icon}} text-{{item.color}}" bindtap="clickflag" data-name='{{item.flag}}'>
+    </view>
+    <text bindtap="clickflag" data-name='{{item.flag}}'>{{item.name}}</text>
+  </view>
+</view>
+
+
+<!--可拖动按钮控件表-->
+<!--buttonStart和buttonEnd一定不能用catch事件，否则按钮点击事件会失效-->
+<!-- 按钮1 左上 -->
+<view class="btn_Suspension" bindtap="btn_Suspension_click1" catchtouchmove="buttonMove1" bindtouchstart="buttonStart" bindtouchend="buttonEnd" style="top:{{buttonTop1}}px;left:{{buttonLeft1}}px;">
+    <image class="Suspension_logo" src="../../images/1.png"></image><!--这里是按钮图标，下载地址会在文章底部说明-->
+    <view wx:if="{{corner_data==0}}"></view>
+    <view wx:else>
+      <view class="cornorMark">
+        <text>{{corner_data}}</text>
+      </view>
+    </view>
+  </view>
+<!-- 按钮2 右上 -->
+<view class="btn_Suspension" bindtap="btn_Suspension_click2" catchtouchmove="buttonMove2" bindtouchstart="buttonStart" bindtouchend="buttonEnd" style="top:{{buttonTop2}}px;left:{{buttonLeft2}}px;">
+    <image class="Suspension_logo" src="../../images/2.png"></image>
+    <!--这里是按钮图标，下载地址会在文章底部说明-->
+    <view wx:if="{{corner_data==0}}"></view>
+    <view wx:else>
+      <view class="cornorMark">
+        <text>{{corner_data}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 按钮3 右下 -->
+<view class="btn_Suspension" bindtap="btn_Suspension_click3" catchtouchmove="buttonMove3" bindtouchstart="buttonStart" bindtouchend="buttonEnd" style="top:{{buttonTop3}}px;left:{{buttonLeft3}}px;">
+    <image class="Suspension_logo" src="../../images/3.png"></image>
+    <!--这里是按钮图标，下载地址会在文章底部说明-->
+    <view wx:if="{{corner_data==0}}"></view>
+    <view wx:else>
+      <view class="cornorMark">
+        <text>{{corner_data}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 按钮4 左下 -->
+<view class="btn_Suspension" bindtap="btn_Suspension_click4" catchtouchmove="buttonMove4" bindtouchstart="buttonStart" bindtouchend="buttonEnd" style="top:{{buttonTop4}}px;left:{{buttonLeft4}}px;">
+    <image class="Suspension_logo" src="../../images/4.png"></image>
+    <!--这里是按钮图标，下载地址会在文章底部说明-->
+    <view wx:if="{{corner_data==0}}"></view>
+    <view wx:else>
+      <view class="cornorMark">
+        <text>{{corner_data}}</text>
+      </view>
+    </view>
+  </view>
